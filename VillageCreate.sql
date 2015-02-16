@@ -1,5 +1,5 @@
 /* **********************************************************
 	DDL Create
 	Schéma MRD:	"Village Vacances VERSION 1"
-	Auteur:		Dominique Septembre - Cégep de Ste-Foy  	
+	Auteur:		Dominique Septembre + Charles-Edouard Beaudet - Cégep de Ste-Foy  	
 ***********************************************************/
