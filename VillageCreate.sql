@@ -9,10 +9,44 @@
 */
 DROP TABLE LOGEMENT;
 DROP TABLE VILLAGE;
+DROP TABLE CATEGORIE_VILLAGE;
+DROP TABLE TYPE_LOGEMENT;
 
 /*
 	Création des tables et séquences
 */
+/***********************************************************
+	Table "CATEGORIE_VILLAGE"
+***********************************************************/
+CREATE TABLE CATEGORIE_VILLAGE
+(
+	NO_CATEGORIE 	SMALLINT 		NOT NULL,
+	DESCRIPTION 	VARCHAR2(50)	NOT NULL,
+	CONSTRAINT PK_CATEGORIE_VILLAGE
+					PRIMARY KEY(NO_CATEGORIE),
+	CONSTRAINT U1_DESCRIPTION_CATEGORIE_VILLAGE
+					UNIQUE (DESCRIPTION)
+	CONSTRAINT NO_CATEGORIE_MIN_MAX
+				CHECK (NO_CATEGORIE BETWEEN 1 AND 5)
+
+);
+/***********************************************************
+	Table "TYPE_LOGEMENT"
+***********************************************************/
+CREATE TABLE TYPE_LOGEMENT
+(
+	CODE_TYPE_LOGEMENT	VARCHAR2(2)		NOT NULL,
+	DESCRIPTION 		VARCHAR2(35)	NOT NULL,
+	NB_MAX_PERSONNES	SMALLINT 		NOT NULL,
+	CONSTRAINT PK_TYPE_LOGEMENT
+						PRIMARY KEY (CODE_TYPE_LOGEMENT),
+	CONSTRAINT U1_DESCRIPTION_TYPE_LOGEMENT
+					UNIQUE (DESCRIPTION),
+	CONSTRAINT TYPE_LOGEMENT_FORMAT
+					CHECK (), -- À COMPLÉTER
+	CONSTRAINT MAX_NB_MAX_PERSONNES
+					CHECK (NB_MAX_PERSONNES <= 10)
+);
 /***********************************************************
 	Table "VILLAGE"
 ***********************************************************/
