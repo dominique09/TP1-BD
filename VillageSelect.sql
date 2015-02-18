@@ -110,7 +110,7 @@
 /*=========================================================================================================
 	11
 	Produire un rapport d’occupation des logements (nombre de nuits occupées pour une période donnée) 
-	du village Casa-Dali pour la période du 7 mars au 23 mars 2015 inclusivement.  Pour chaque logement 
+	du village Casa-Dali pour la période du 7 mars au 23 mars 2015 inclusivement. Pour chaque logement 
 	du village dont le taux d’occupation est inférieur à 30%, indiquer dans l’ordre : 
 	taux d’occupation (format affichage : 24%), numéro du logement, code du type de logement, 
 	description du type de logement. Trier par taux d’occupation
@@ -118,20 +118,40 @@
 
 
 
-/*=======================================================================================
-/*=======================================================================================*/
+/*=========================================================================================================
+	12
+	Produire la liste des logements du village Casa-Dali disponibles pour toute la période du
+	17 au  23 mars 2015 inclusivement. Pour chaque logement disponible, indiquer dans l’ordre :
+	numéro du logement,	code du type de logement, description du type de logement. Trier par logement.
+/*=========================================================================================================*/
+
+
+
+/*=========================================================================================================
+	13
+	Produire la liste des réservations sans séjour. Pour chaque réservation, indiquer dans l’ordre : 
+	numéro de la réservation, date de la réservation (format affichage : jj/mm/aaaa), nom du client, 
+	prénom du client. Trier par réservation (numéro).
+/*=========================================================================================================*/
+
+
+
+/*===============================================================================================================
+	14
+	Calculer le montant total hors taxes à facturer pour les réservations effectuées au mois de février 2015 
+	date de la réservation). Le montant facturé est calculé ainsi : 
+	(Prix transport/personne * nombre total personnes) + [pour chaque logement] (nombre nuits * nombre personnes * tarif/nuit/personne)
+	Ainsi, le montant facturé pour la réservation no 2, 5 nuits et 2 logements (108 et 109) dans le village
+	Casa-Dali, est de 7404 $. Pour chaque réservation, indiquer dans l’ordre : numéro de la réservation, 
+	date de la réservation (format affichage : jj/mm/aaaa), montant hors taxes à facturer  (format affichage : 2138.00 $Can), 
+	nom du pays, nom du village. Trier par réservation. 
+/*===============================================================================================================*/
 
 
 
 /*=======================================================================================
-/*=======================================================================================*/
-
-
-
-/*=======================================================================================
-/*=======================================================================================*/
-
-
-
-/*=======================================================================================
+	15
+	Le ou les villages avec le plus grand nombre de nuitées vendues pour le mois de mars 2015. 
+	Une nuitée représente l’hébergement d’une personne pour une nuit.  Indiquer dans l’ordre : 
+	pays, nom village, nombre de nuitées.
 /*=======================================================================================*/
