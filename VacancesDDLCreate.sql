@@ -39,6 +39,19 @@ CREATE TABLE TYPE_LOGEMENT
 					CHECK (NB_MAX_PERSONNES <= 10)
 );
 /***********************************************************
+	Table "TARIF_NUIT"
+***********************************************************/
+CREATE TABLE TARIF_NUIT
+(
+	CATEGORIE 			SMALLINT		NOT NULL,
+	TYPE_LOGEMENT 		VARCHAR2(2)		NOT NULL,
+	TARIF_UNITAIRE 		NUMERIC(5;2)	NOT NULL,
+	CONSTRAINT PK_TARIF_NUIT
+					PRIMARY KEY (CATEGORIE, TYPE_LOGEMENT),
+	CONSTRAINT MIN_MAX_TARIF_UNITAIRE
+					CHECK (TARIF_UNITAIRE BETWEEN 20 AND 300);
+);
+/***********************************************************
 	Table "VILLAGE"
 ***********************************************************/
 CREATE TABLE VILLAGE
