@@ -67,7 +67,6 @@ CREATE TABLE VILLAGE
 					FOREIGN KEY (NO_CATEGORIE)
 					REFERENCES CATEGORIE_VILLAGE (NO_CATEGORIE)
 );
-
 /***********************************************************
 	Table "LOGEMENT"
 ***********************************************************/
@@ -86,3 +85,57 @@ CREATE TABLE LOGEMENT
 					FOREIGN KEY (NOM_VILLAGE)
 					REFERENCES VILLAGE (NOM_VILLAGE)
 );
+/***********************************************************
+	Table "CLIENT"
+***********************************************************/
+CREATE TABLE CLIENT
+(
+	NO_CLIENT 			NUMERIC(6;0)	NOT NULL, --sequence SEQ_NO_CLIENT
+	NOM 				VARCHAR2(15)	NOT NULL,
+	PRENOM 				VARCHAR2(10)	NOT NULL,
+	SEXE				CHAR(1) 		NOT NULL,
+	TEL_DOMICILE 		NUMERIC(10;0)	NOT NULL,
+	ADRESSE				VARCAHR2(50) 	NULL,
+	TEL_BUREAU 			NUMERIC(10;0) 	NULL,
+	CONSTRAINT PK_CLIENT
+					PRIMARY KEY (NO_CLIENT),
+	CONSTRAINT SEXE_M_OR_F
+					CHECK (SEXE = 'F' OR SEXE = 'M')
+);
+/***********************************************************
+	Séquence "SEQ_NO_RESERVATION"
+***********************************************************/
+CREATE SEQUENCE SEQ_NO_CLIENT
+			 START WITH 1
+			 INCREMENT BY 1
+			 MAXVALUE 999999;
+/***********************************************************
+	Table "RESERVATION"
+***********************************************************/
+CREATE TABLE RESERVATION
+(
+	NO_RESERVATION		NUMERIC(6;0)	NOT NULL, --sequence SEQ_NO_RESERVATION
+	DATE_RESERVATION	DATE 			DEFAULT SYSDATE		NOT NULL,
+	NO_CLIENT			NUMERIC(6;0)	NOT NULL,
+	NOM_VILLAGE			VARCHAR2(15)	NOT NULL,
+	DEBUT_SEJOUR		DATE 			NOT NULL,
+	FIN_SEJOUR 			DATE 			NOT NULL,
+	CONSTRAINT PK_RESERVATION
+					PRIMARY KEY (NO_RESERVATION),
+	CONSTRAINT FK1_NO_CLIENT
+					FOREIGN KEY (NO_CLIENT)
+					REFERENCES CLIENT (NO_CLIENT),
+	CONSTRAINT FK2_NOM_VILLAGE
+					FOREIGN KEY (NOM_VILLAGE)
+					REFERENCES VILLAGE (NOM_VILLAGE)
+	CONSTRAINT DEBUT_EST_AVANT_FIN
+					CHECK (DEBUT_SEJOUR < FIN_SEJOUR)
+);
+
+/***********************************************************
+	Séquence "SEQ_NO_RESERVATION"
+***********************************************************/
+CREATE SEQUENCE SEQ_NO_RESERVATION
+			 START WITH 1
+			 INCREMENT BY 1
+			 MAXVALUE 999999;
