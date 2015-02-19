@@ -141,7 +141,21 @@ ORDER BY
 	 numéro du client, nom du client, prénom du client. 
 	 Trier par date de réservation, puis par numéro de réservation. 
 /*=============================================================================================================*/
-
+SELECT
+	RESERV.NO_RESERVATION,
+	RESERV.NOM_VILLAGE,
+	RESERV.DEBUT_SEJOUR AS DATE_DEPART,
+	RESERV.FIN_SEJOUR AS DATE_RETOUR,
+	SEJOUR.NB_PERSONNES,
+	RESERV.NO_CLIENT,
+	CLIENT.NOM AS NOM_CLIENT,
+	CLIENT.PRENOM AS PRENOM_CLIENT
+FROM
+WHERE
+	RESERV.DATE_RESERVATION BETWEEN ()
+ORDER BY
+	RESERV.DATE_RESERVATION,
+	RESERV.NO_RESERVATION;
 
 
 /*============================================================================================================
