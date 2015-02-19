@@ -65,7 +65,15 @@ ORDER BY
 	Pour chaque logement, indiquer dans l’ordre : code du type de logement, numéro du logement. 
 	Trier par type de logement
 /*================================================================================================*/
-
+SELECT
+	CODE_TYPE_LOGEMENT,
+	NO_LOGEMENT
+FROM
+	LOGEMENT
+WHERE
+	NOM_VILLAGE = 'Casa-Dali'
+ORDER BY
+	NO_LOGEMENT;
 
 /*=======================================================================================
 	4
@@ -80,13 +88,10 @@ FROM
 	TYPE_LOGEMENT
 		INNER JOIN LOGEMENT
 			ON TYPE_LOGEMENT.CODE_TYPE_LOGEMENT = LOGEMENT.CODE_TYPE_LOGEMENT
-			AND LOGEMENT.NOM_VILLAGE = 'Kouros'
+WHERE
+	LOGEMENT.NOM_VILLAGE = 'Kouros'
 ORDER BY
-	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT;
-
-	
-	
-
+	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT;	
 
 /*=======================================================================================
 	5
