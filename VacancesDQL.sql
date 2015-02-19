@@ -23,7 +23,27 @@
 	prix/nuit/personne en $ canadiens  (format affichage : 50.50 $Can). 
 	Trier par type de logement, puis catégorie de village 
 /*========================================================================================================*/
-
+SELECT	
+	LOGEMENT.CODE_TYPE_LOGEMENT,
+	TYPE_LOGEMENT.DESCRIPTION,
+	VILLAGE.NO_CATEGORIE,
+	CATEGORIE_VILLAGE.DESCRIPTION,
+	TARIF_NUIT.TARIF_UNITAIRE
+FROM	
+	LOGEMENT
+		INNER JOIN VILLAGE
+			ON LOGEMENT.NOM_VILLAGE = VILLAGE.NOM_VILLAGE
+				INNER JOIN CATEGORIE_VILLAGE
+					ON VILLAGE.NO_CATEGORIE = CATEGORIE_VILLAGE.NO_CATEGORIE
+		INNER JOIN TYPE_LOGEMENT
+			ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
+				INNER JOIN TARIF_NUIT
+					ON TYPE_LOGEMENT.CODE_TYPE_LOGEMENT = TARIF_NUIT.CODE_TYPE_LOGEMENT
+					AND VILLAGE.NO_CATEGORIE = TARIF_NUIT.CATEGORIE
+ORDER BY
+	LOGEMENT.TYPE_LOGEMENT,
+	VILLAGE.NO_CATEGORIE;
+					
 
 
 /*=================================================================================================
@@ -40,7 +60,19 @@
 	Pour chaque type de logement, indiquer dans l’ordre : le code du type de logement, 
 	la description du type de logement. Trier par code de type de logement. 
 /*=======================================================================================*/
+SELECT
+	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT,
+	TYPE_LOGEMENT.DESCRIPTION
+FROM	
+	TYPE_LOGEMENT
+		INNER JOIN LOGEMENT
+			ON TYPE_LOGEMENT.CODE_TYPE_LOGEMENT = LOGEMENT.CODE_TYPE_LOGEMENT
+			AND LOGEMENT.NOM_VILLAGE = 'Kouros'
+ORDER BY
+	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT;
 
+	
+	
 
 
 /*=======================================================================================
