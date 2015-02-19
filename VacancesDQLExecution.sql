@@ -8,8 +8,10 @@
 	16
 	Augmenter de 5,5% tous les tarifs des nuitées pour les villages de catégorie 1 et 2. 
 ========================================================================================*/
-
-
+UPDATE TARIF_NUIT
+	SET TARIF_UNITAIRE = TARIF_UNITAIRE * 1.055
+WHERE
+	CATEGORIE = 1 OR 2;
 
 /*=======================================================================================
 	17
