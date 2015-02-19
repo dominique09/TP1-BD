@@ -81,7 +81,7 @@ ORDER BY
 	Pour chaque type de logement, indiquer dans l’ordre : le code du type de logement, 
 	la description du type de logement. Trier par code de type de logement. 
 /*=======================================================================================*/
-SELECT
+SELECT DISTINCT
 	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT,
 	TYPE_LOGEMENT.DESCRIPTION
 FROM	
@@ -105,7 +105,7 @@ ORDER BY
 SELECT
 	TARIF_NUIT.TYPE_LOGEMENT,
 	TYPE_LOGEMENT.DESCRIPTION,
-	CAT_VILLAGE.CATEGORIE,
+	CAT_VILLAGE.NO_CATEGORIE,
 	CAT_VILLAGE.DESCRIPTION,
 	TARIF_NUIT.TARIF_UNITAIRE || ' $Can'
 FROM
