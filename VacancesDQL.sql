@@ -12,7 +12,20 @@
 	 prix du transport par personne (format affichage: 174.50 $Can). 
 	 Trier par pays, puis par catégorie de village (no), puis par village.
 /*=======================================================================================*/
-
+SELECT
+	VILLAGE.NOM_VILLAGE,
+	VILLAGE.PAYS,
+	VILLAGE.NO_CATEGORIE,
+	CAT_VILLAGE.DESCRIPTION,
+	VILLAGE.PRIX_TRANSPORT AS PRIX_TRANSPORT
+FROM
+	VILLAGE
+		INNER JOIN CATEGORIE_VILLAGE CAT_VILLAGE
+			ON VILLAGE.NO_CATEGORIE = CAT_VILLAGE.NO_CATEGORIE
+ORDER BY
+	VILLAGE.PAYS,
+	VILLAGE.NO_CATEGORIE,
+	VILLAGE.NOM_VILLAGE;
 
 
 /*========================================================================================================
