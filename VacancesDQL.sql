@@ -286,7 +286,19 @@ ORDER BY
 	17 au  23 mars 2015 inclusivement. Pour chaque logement disponible, indiquer dans l’ordre :
 	numéro du logement,	code du type de logement, description du type de logement. Trier par logement.
 /*=========================================================================================================*/
-
+SELECT
+	LOGEMENT.NO_LOGEMENT,
+	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT,
+	TYPE_LOGOEMENT.DESCRIPTION
+FROM
+	LOGEMENT
+		INNER JOIN TYPE_LOGOEMENT
+			ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGOEMENT.CODE_TYPE_LOGEMENT
+		LEFT OUTER JOIN SEJOUR
+			LOGEMENT.NO_LOGEMENT = SEJOUR.NO_LOGEMENT
+			AND LOGEMENT.NOM_VILLAGE = SEJOUR.NOM_VILLAGE
+WHERE
+	NOM_VILLAGE = 'Casa-Dali';
 
 
 /*=========================================================================================================
