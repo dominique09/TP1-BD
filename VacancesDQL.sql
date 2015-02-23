@@ -136,16 +136,18 @@ SELECT
 	LOGEMENT.CODE_TYPE_LOGEMENT,
 	TYPE_LOGEMENT.DESCRIPTION,
 	RESERVATION.NO_RESERVATION,
-	FORMAT(RESERVATION.DEBUT_SEJOUR,'dd-mm-yyyy'),
-	FORMAT(RESERVATION.FIN_SEJOUR,'dd-mm-yyyy')
+	FORMAT(RESERVATION.DEBUT_SEJOUR,'dd/mm/yyyy') AS 'DEBUT SEJOUR',
+	FORMAT(RESERVATION.FIN_SEJOUR,'dd/mm/yyyy') AS 'FIN SEJOUR'
 FROM
 	SEJOUR
 		INNER JOIN RESERVATION
-			ON SEJOUR.NO_RESERVATION = RESERVATION.NO_RESERVATION
+			ON SEJOUR.NO_RESERVATION = RESERVATION.NO_RESERVATION AND
+			   SEJOUR.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
 				INNER JOIN VILLAGE
 					ON RESERVATION.NOM_VILLAGE = VILLAGE.NOM_VILLAGE
 		INNER JOIN LOGEMENT
-			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT
+			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT AND
+			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE
 				INNER JOIN TYPE_LOGEMENT
 					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT			
 WHERE
@@ -153,7 +155,6 @@ WHERE
 	(EXTRACT (YEAR FROM RESERVATION.DEBUT_SEJOUR) = '2015' AND EXTRACT (MONTH FROM RESERVATION.DEBUT_SEJOUR) = '03')
 	OR 
 	(EXTRACT (YEAR FROM RESERVATION.FIN_SEJOUR) = '2015' AND EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03');
-
 
 /*=============================================================================================================
 	7
@@ -203,7 +204,18 @@ ORDER BY
 	numéro du client, nom du client, prénom du client, adresse du client,
 	téléphone domicile du client  (format affichage : (514)412-2296) Trier par no de client. 
 /*===========================================================================================================*/
-
+SELECT
+	NO_CLIENT,
+	NOM,
+	PRENOM,
+	ADRESSE,
+	FORMAT(TEL_DOMICILE, '(###)###-####') AS 'TEL DOMICILE'
+FROM
+	CLIENT
+WHERE
+	ADRESSE = 'Montréal'
+ORDER BY 
+	NO_CLIENT;
 
 
 /*=========================================================================================================
