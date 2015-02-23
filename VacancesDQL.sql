@@ -230,19 +230,7 @@ ORDER BY
 	prix moyen par personne et par nuit des logements   (format affichage : 43.64 $Can). 
 	Trier par catégorie de village. 
 /*=========================================================================================================*/
-SELECT
-	CAT_VILLAGE.NO_CATEGORIE,
-	CAT_VILLAGE.DESCRIPTION,
-	TO_CHAR(AVG(TARIF.TARIF_UNITAIRE), '9999.99') || ' $Can' AS MOYENNE_TARIF
-FROM
-	CATEGORIE_VILLAGE CAT_VILLAGE
-		INNER JOIN TARIF_NUIT TARIF
-			ON CAT_VILLAGE.NO_CATEGORIE = TARIF.CATEGORIE
-GROUP BY
-	CAT_VILLAGE.NO_CATEGORIE,
-	CAT_VILLAGE.DESCRIPTION
-ORDER BY
-	CAT_VILLAGE.NO_CATEGORIE;
+
 
 /*====================================================================================================
 	10
@@ -272,10 +260,14 @@ FROM
 			ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
 		INNER JOIN SEJOUR
 			ON LOGEMENT.NO_LOGEMENT = SEJOUR.NO_LOGEMENT;
-			INNER JOIN RESERVATION
-				ON SEJOUR.NO_RESERVATION = 
 HAVING
 	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+	AND
+		((EXTRACT (YEAR FROM RESERVATION.DEBUT_SEJOUR) = '2015'
+			AND EXTRACT (MONTH FROM RESERVATION.DEBUT_SEJOUR) = '03')
+		OR 
+		(EXTRACT (YEAR FROM RESERVATION.FIN_SEJOUR) = '2015'
+			AND EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03'));
 GROUP BY
 
 ORDER BY
@@ -307,20 +299,7 @@ WHERE
 	numéro de la réservation, date de la réservation (format affichage : jj/mm/aaaa), nom du client, 
 	prénom du client. Trier par réservation (numéro).
 /*=========================================================================================================*/
-SELECT
-	RESERV.NO_RESERVATION,
-	CLIENT.NOM,
-	CLIENT.PRENOM
-FROM
-	RESERVATION RESERV
-		INNER JOIN CLIENT
-			ON RESERV.NO_CLIENT = CLIENT.NO_CLIENT
-		LEFT OUTER JOIN SEJOUR
-			ON RESERV.NO_RESERVATION = SEJOUR.NO_RESERVATION
-WHERE
-	SEJOUR.NO_RESERVATION IS NULL
-ORDER BY
-	RESERV.NO_RESERVATION;
+
 
 
 /*===============================================================================================================
@@ -339,6 +318,6 @@ ORDER BY
 /*=======================================================================================
 	15
 	Le ou les villages avec le plus grand nombre de nuitées vendues pour le mois de mars 2015. 
-	Une nuitée représente l’hébergement d’une personne pour une nuit. Indiquer dans l’ordre : 
+	Une nuitée représente l’hébergement d’une personne pour une nuit.  Indiquer dans l’ordre : 
 	pays, nom village, nombre de nuitées.
 /*=======================================================================================*/
