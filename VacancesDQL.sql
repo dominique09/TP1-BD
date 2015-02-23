@@ -129,7 +129,32 @@ ORDER BY
 	Version 2 : pour chaque date de séjour concernant le logement : numéro de la réservation, 
 	date du séjour (de la nuit occupée) (format affichage : jj/mm/aaaa). Trier par date(s).
 /*=============================================================================================================*/
-
+--Version 1
+SELECT
+	SEJOUR.NO_LOGEMENT,
+	RESERVATION.NOM_VILLAGE,
+	VILLAGE.PAYS,
+	LOGEMENT.CODE_TYPE_LOGEMENT,
+	TYPE_LOGEMENT.DESCRIPTION,
+	RESERVATION.NO_RESERVATION,
+	FORMAT(RESERVATION.DEBUT_SEJOUR,'dd-mm-yyyy'),
+	FORMAT(RESERVATION.FIN_SEJOUR,'dd-mm-yyyy')
+FROM
+	SEJOUR
+		INNER JOIN RESERVATION
+			ON SEJOUR.NO_RESERVATION = RESERVATION.NO_RESERVATION
+				INNER JOIN VILLAGE
+					ON RESERVATION.NOM_VILLAGE = VILLAGE.NOM_VILLAGE
+		INNER JOIN LOGEMENT
+			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT
+				INNER JOIN TYPE_LOGEMENT
+					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT			
+WHERE
+	SEJOUR.NO_LOGEMENT = 108,
+	(EXTRACT (YEAR FROM RESERVATION.DEBUT_SEJOUR) = '2015' AND EXTRACT (MONTH FROM RESERVATION.DEBUT_SEJOUR) = '03')
+	OR 
+	(EXTRACT (YEAR FROM RESERVATION.FIN_SEJOUR) = '2015' AND EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03');
+--
 
 
 /*=============================================================================================================
