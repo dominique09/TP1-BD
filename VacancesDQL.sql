@@ -189,7 +189,18 @@ ORDER BY
 	numéro du client, nom du client, prénom du client, adresse du client,
 	téléphone domicile du client  (format affichage : (514)412-2296) Trier par no de client. 
 /*===========================================================================================================*/
-
+SELECT
+	NO_CLIENT,
+	NOM,
+	PRENOM,
+	ADRESSE,
+	FORMAT(TEL_DOMICILE, '(###)###-####') AS 'TEL DOMICILE'
+FROM
+	CLIENT
+WHERE
+	ADRESSE = 'Montréal'
+ORDER BY 
+	NO_CLIENT;
 
 
 /*=========================================================================================================
