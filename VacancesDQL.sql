@@ -249,9 +249,29 @@ ORDER BY
 	taux d’occupation (format affichage : 24%), numéro du logement, code du type de logement, 
 	description du type de logement. Trier par taux d’occupation
 /*=========================================================================================================*/
+SELECT
+	|| '%' AS TAUX_OCCUPATION,
+	LOGEMENT.NO_LOGEMENT,
+	LOGEMENT.CODE_TYPE_LOGEMENT
+	TYPE_LOGEMENT.DESCRIPTION
+FROM
+	LOGEMENT
+		INNER JOIN TYPE_LOGEMENT
+			ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
+		INNER JOIN SEJOUR
+			ON LOGEMENT.NO_LOGEMENT = SEJOUR.NO_LOGEMENT;
+HAVING
+	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+	AND
+		((EXTRACT (YEAR FROM RESERVATION.DEBUT_SEJOUR) = '2015'
+			AND EXTRACT (MONTH FROM RESERVATION.DEBUT_SEJOUR) = '03')
+		OR 
+		(EXTRACT (YEAR FROM RESERVATION.FIN_SEJOUR) = '2015'
+			AND EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03'));
+GROUP BY
 
-
-
+ORDER BY
+	TAUX_OCCUPATION;
 /*=========================================================================================================
 	12
 	Produire la liste des logements du village Casa-Dali disponibles pour toute la période du
