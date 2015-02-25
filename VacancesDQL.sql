@@ -26,8 +26,6 @@ ORDER BY
 	VILLAGE.PAYS,
 	VILLAGE.NO_CATEGORIE,
 	VILLAGE.NOM_VILLAGE;
-
-
 /*========================================================================================================
 	2
 	Produire la liste des tarifs des nuitées pour chaque type de logement.
@@ -51,9 +49,6 @@ FROM
 ORDER BY
 	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT,
 	CATEGORIE_VILLAGE.NO_CATEGORIE;
-					
-
-
 /*=================================================================================================
 	3
 	Produire la liste des logements pour le village Casa-Dali. 
@@ -69,7 +64,6 @@ WHERE
 	NOM_VILLAGE = 'Casa-Dali'
 ORDER BY
 	NO_LOGEMENT;
-
 /*=======================================================================================
 	4
 	Produire la liste des types de logement proposés dans le village Kouros. 
@@ -87,7 +81,6 @@ WHERE
 	LOGEMENT.NOM_VILLAGE = 'Kouros'
 ORDER BY
 	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT;	
-
 /*=======================================================================================
 	5
 	Produire la liste des tarifs des nuitées pour le type de logement D3.
@@ -113,7 +106,6 @@ WHERE
 	TARIF_NUIT.TYPE_LOGEMENT = 'D3'
 ORDER BY
 	TARIF_NUIT.CATEGORIE;
-
 /*=============================================================================================================
 	6
 	Produire le calendrier d’occupation du logement 108 du village Casa Dali pour le mois de mars 2015. 
@@ -155,7 +147,6 @@ WHERE
 		OR 
 		(EXTRACT (YEAR FROM RESERVATION.FIN_SEJOUR) = '2015'
 			AND EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03'));
-
 /*=============================================================================================================
 	7
 	 Produire les confirmations pour toutes les réservations effectuées (date de réservation)
@@ -196,8 +187,6 @@ GROUP BY
 ORDER BY
 	RESERV.DATE_RESERVATION,
 	RESERV.NO_RESERVATION;
-
-
 /*============================================================================================================
 	8
 	Produire la liste des clients de Montréal. Pour chaque client habitant Montréal, indiquer dans l’ordre : 
@@ -213,12 +202,9 @@ SELECT
 FROM
 	CLIENT
 WHERE
-	LOWER(ADRESSE) LIKE '%montreal%'
-	OR LOWER(ADRESSE) LIKE '%montréal%'
+	LOWER(ADRESSE) LIKE '%montr_al%'
 ORDER BY 
 	NO_CLIENT;
-
-
 /*=========================================================================================================
 	9
 	Calculer le tarif moyen des nuitées pour chaque catégorie de village. Pour chaque catégorie de village,
@@ -239,7 +225,6 @@ GROUP BY
 	CATEGORIE_VILLAGE.DESCRIPTION
 ORDER BY
 	CATEGORIE_VILLAGE.NO_CATEGORIE;
-
 /*====================================================================================================
 	10
 	Produire un rapport d’occupation des logements du village Casa-Dali pour le mois de mars 2015.
@@ -345,8 +330,6 @@ WHERE
 	NO_RESERVATION NOT IN (SELECT DISTINCT NO_RESERVATION FROM SEJOUR)
 ORDER BY
 	RESERVATION.NO_RESERVATION;
-
-
 /*===============================================================================================================
 	14
 	Calculer le montant total hors taxes à facturer pour les réservations effectuées au mois de février 2015 
@@ -391,8 +374,6 @@ GROUP BY
 	VILLAGE.PRIX_TRANSPORT
 ORDER BY
 	RESERVATION.NO_RESERVATION;
-
-
 /*=======================================================================================
 	15
 	Le ou les villages avec le plus grand nombre de nuitées vendues pour le mois de mars 2015. 
