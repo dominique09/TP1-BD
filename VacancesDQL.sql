@@ -231,7 +231,9 @@ ORDER BY
 	prix moyen par personne et par nuit des logements   (format affichage : 43.64 $Can). 
 	Trier par catégorie de village. 
 /*=========================================================================================================*/
+SELECT
 
+FROM
 
 /*====================================================================================================
 	10
@@ -239,9 +241,9 @@ ORDER BY
 	Pour chaque logement du village, indiquer dans l’ordre : numéro du logement, nombre de nuits occupées. 
 	Trier par logement. 
 /*===================================================================================================*/
-SELECT
+SELECT -- A FINIR
 	SEJOUR.NO_LOGEMENT,
-	SUM(RESERVATION.FIN_SEJOUR - RESERVATION.DEBUT_SEJOUR) AS DUREE_OCCUPATION
+	SUM(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')) - GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy'))) AS DUREE_OCCUPATION
 FROM
 	SEJOUR
 		INNER JOIN RESERVATION
@@ -251,12 +253,15 @@ FROM
 			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT AND
 			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE
 WHERE
-	SEJOUR.NOM_VILLAGE = 'Casa-Dali' AND
+	LOGEMENT.NOM_VILLAGE = 'Casa-Dali' AND
 	((EXTRACT (YEAR FROM RESERVATION.DEBUT_SEJOUR) = '2015' AND
 	  EXTRACT (MONTH FROM RESERVATION.DEBUT_SEJOUR) = '03')
 	OR 
 	 (EXTRACT (YEAR FROM RESERVATION.FIN_SEJOUR) = '2015' AND
-	  EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03'))
+	  EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03')
+	OR
+	 (RESERVATION.FIN_SEJOUR > TO_DATE('31-03-2015', 'dd-mm-yyyy') AND
+	  RESERVATION.DEBUT_SEJOUR < TO_DATE('01-03-2015', 'dd-mm-yyyy')))
 GROUP BY
 	SEJOUR.NO_LOGEMENT
 ORDER BY
@@ -270,7 +275,7 @@ ORDER BY
 	taux d’occupation (format affichage : 24%), numéro du logement, code du type de logement, 
 	description du type de logement. Trier par taux d’occupation
 /*=========================================================================================================*/
-SELECT
+SELECT --a FINIR
 	|| '%' AS TAUX_OCCUPATION,
 	LOGEMENT.NO_LOGEMENT,
 	LOGEMENT.CODE_TYPE_LOGEMENT
@@ -299,19 +304,21 @@ ORDER BY
 	17 au  23 mars 2015 inclusivement. Pour chaque logement disponible, indiquer dans l’ordre :
 	numéro du logement,	code du type de logement, description du type de logement. Trier par logement.
 /*=========================================================================================================*/
-SELECT
+SELECT DISTINCT --a finir
 	LOGEMENT.NO_LOGEMENT,
 	TYPE_LOGEMENT.CODE_TYPE_LOGEMENT,
-	TYPE_LOGOEMENT.DESCRIPTION
+	TYPE_LOGEMENT.DESCRIPTION
 FROM
 	LOGEMENT
-		INNER JOIN TYPE_LOGOEMENT
-			ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGOEMENT.CODE_TYPE_LOGEMENT
+		INNER JOIN TYPE_LOGEMENT
+			ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
 		LEFT OUTER JOIN SEJOUR
-			LOGEMENT.NO_LOGEMENT = SEJOUR.NO_LOGEMENT
+			ON LOGEMENT.NO_LOGEMENT = SEJOUR.NO_LOGEMENT
 			AND LOGEMENT.NOM_VILLAGE = SEJOUR.NOM_VILLAGE
 WHERE
-	NOM_VILLAGE = 'Casa-Dali';
+	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+ORDER BY
+	LOGEMENT.NO_LOGEMENT;
 
 
 /*=========================================================================================================
@@ -320,7 +327,19 @@ WHERE
 	numéro de la réservation, date de la réservation (format affichage : jj/mm/aaaa), nom du client, 
 	prénom du client. Trier par réservation (numéro).
 /*=========================================================================================================*/
-
+SELECT
+	RESERVATION.NO_RESERVATION,
+	TO_CHAR(DATE_RESERVATION, 'dd/mm/yyyy') AS DATE_RESERVATION,
+	CLIENT.NOM AS NOM_CLIENT,
+	CLIENT.PRENOM AS PRENOM_CLIENT
+FROM
+	RESERVATION
+		INNER JOIN CLIENT
+			ON RESERVATION.NO_CLIENT = CLIENT.NO_CLIENT
+WHERE
+	NO_RESERVATION NOT IN (SELECT DISTINCT NO_RESERVATION FROM SEJOUR)
+ORDER BY
+	RESERVATION.NO_RESERVATION;
 
 
 /*===============================================================================================================
