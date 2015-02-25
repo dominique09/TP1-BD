@@ -227,8 +227,18 @@ ORDER BY
 	Trier par catégorie de village. 
 /*=========================================================================================================*/
 SELECT
-
+	CATEGORIE_VILLAGE.NO_CATEGORIE,
+	CATEGORIE_VILLAGE.DESCRIPTION,
+	TO_CHAR(AVG(TARIF_NUIT.TARIF_UNITAIRE), '999.99') || '$Can' AS PRIX_MOYEN
 FROM
+	CATEGORIE_VILLAGE
+		INNER JOIN TARIF_NUIT
+			ON CATEGORIE_VILLAGE.NO_CATEGORIE = TARIF_NUIT.CATEGORIE
+GROUP BY
+	CATEGORIE_VILLAGE.NO_CATEGORIE,
+	CATEGORIE_VILLAGE.DESCRIPTION
+ORDER BY
+	CATEGORIE_VILLAGE.NO_CATEGORIE;
 
 /*====================================================================================================
 	10
