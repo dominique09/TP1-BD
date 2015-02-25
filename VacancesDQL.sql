@@ -238,8 +238,21 @@ ORDER BY
 	Pour chaque logement du village, indiquer dans l’ordre : numéro du logement, nombre de nuits occupées. 
 	Trier par logement. 
 /*===================================================================================================*/
-
-
+SELECT
+	SEJOUR.NO_LOGEMENT,
+	(RESERVATION.FIN_SEJOUR - RESERVATION.DEBUT_SEJOUR) AS DUREE_SEJOUR
+FROM
+	SEJOUR
+		INNER JOIN RESERVATION
+			ON SEJOUR.NO_RESERVATION = RESERVATION.NO_RESERVATION AND
+			   SEJOUR.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
+WHERE
+	SEJOUR.NOM_VILLAGE = 'Casa-Dali' AND
+	((EXTRACT (YEAR FROM RESERVATION.DEBUT_SEJOUR) = '2015' AND
+	  EXTRACT (MONTH FROM RESERVATION.DEBUT_SEJOUR) = '03')
+	OR 
+	 (EXTRACT (YEAR FROM RESERVATION.FIN_SEJOUR) = '2015' AND
+	  EXTRACT (MONTH FROM RESERVATION.FIN_SEJOUR) = '03'));
 
 /*=========================================================================================================
 	11
