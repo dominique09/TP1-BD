@@ -232,8 +232,8 @@ ORDER BY
 	Trier par logement. 
 /*===================================================================================================*/
 SELECT
-	SEJOUR.NO_LOGEMENT,
-	SUM(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')) - GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy'))) AS DUREE_OCCUPATION
+	LOGEMENT.NO_LOGEMENT,
+	NVL(SUM(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')) - GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy'))),0) AS DUREE_OCCUPATION
 FROM
 	SEJOUR
 		INNER JOIN RESERVATION
@@ -248,13 +248,13 @@ WHERE
 	OR
 	RESERVATION.DEBUT_SEJOUR BETWEEN TO_DATE('01-03-2015', 'dd-mm-yyyy') AND TO_DATE('31-03-2015', 'dd-mm-yyyy')
 	OR
-	 (RESERVATION.FIN_SEJOUR > TO_DATE('31-03-2015', 'dd-mm-yyyy') AND
-	  RESERVATION.DEBUT_SEJOUR < TO_DATE('01-03-2015', 'dd-mm-yyyy'))
-	OR LOGEMENT.NO_LOGEMENT NOT IN (SELECT NO_LOGEMENT FROM SEJOUR WHERE NOM_VILLAGE = 'Casa-Dali'))
+	(RESERVATION.FIN_SEJOUR > TO_DATE('31-03-2015', 'dd-mm-yyyy') AND RESERVATION.DEBUT_SEJOUR < TO_DATE('01-03-2015', 'dd-mm-yyyy'))
+	OR
+	(LOGEMENT.NO_LOGEMENT NOT IN (SELECT SEJOUR.NO_LOGEMENT FROM SEJOUR WHERE SEJOUR.NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'))
 GROUP BY
-	SEJOUR.NO_LOGEMENT
+	LOGEMENT.NO_LOGEMENT
 ORDER BY
-	SEJOUR.NO_LOGEMENT;
+	LOGEMENT.NO_LOGEMENT;
 	
 /*=========================================================================================================
 	11
@@ -318,8 +318,6 @@ WHERE
 	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
 ORDER BY
 	LOGEMENT.NO_LOGEMENT;
-
-
 /*=========================================================================================================
 	13
 	Produire la liste des réservations sans séjour. Pour chaque réservation, indiquer dans l’ordre : 
