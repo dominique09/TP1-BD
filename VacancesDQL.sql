@@ -384,14 +384,3 @@ ORDER BY
 	Une nuitée représente l’hébergement d’une personne pour une nuit.  Indiquer dans l’ordre : 
 	pays, nom village, nombre de nuitées.
 /*=======================================================================================*/
-SELECT 
-	SEJOUR.NO_LOGEMENT,
-	RESERVATION.DEBUT_SEJOUR,
-	RESERVATION.FIN_SEJOUR
-FROM 
-	RESERVATION
-		INNER JOIN SEJOUR
-			ON RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE AND
-			   RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION
-WHERE	
-	SEJOUR.NOM_VILLAGE = 'Casa-Dali';
