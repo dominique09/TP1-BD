@@ -264,8 +264,8 @@ ORDER BY
 	taux d’occupation (format affichage : 24%), numéro du logement, code du type de logement, 
 	description du type de logement. Trier par taux d’occupation
 /*=========================================================================================================*/
-SELECT --MANQUE LES LOGEMENTS 105 ET 107
-	NVL(SUM(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')) - GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('07-03-2015', 'dd-mm-yyyy'))) / 16 * 100, 0) || '%' AS TAUX_OCCUPATION,
+SELECT 
+	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')), TO_DATE('07-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('07-03-2015', 'dd-mm-yyyy')), TO_DATE('23-03-2015', 'dd-mm-yyyy'))) / 16 * 100, 0) || '%' AS TAUX_OCCUPATION,
 	LOGEMENT.NO_LOGEMENT,
 	LOGEMENT.CODE_TYPE_LOGEMENT,
 	TYPE_LOGEMENT.DESCRIPTION
@@ -277,23 +277,17 @@ FROM
 		RIGHT OUTER JOIN LOGEMENT
 			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT AND
 			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE AND
-			   SEJOUR.NOM_VILLAGE = 'Casa-Dali'
+			   SEJOUR.NOM_VILLAGE = 'Casa-Dali' 
 				INNER JOIN TYPE_LOGEMENT
 					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
 WHERE
-	(RESERVATION.FIN_SEJOUR BETWEEN TO_DATE('07-03-2015', 'dd-mm-yyyy') AND TO_DATE('23-03-2015', 'dd-mm-yyyy')
-	OR
-	RESERVATION.DEBUT_SEJOUR BETWEEN TO_DATE('07-03-2015', 'dd-mm-yyyy') AND TO_DATE('23-03-2015', 'dd-mm-yyyy')
-	OR
-	(RESERVATION.FIN_SEJOUR >= TO_DATE('23-03-2015', 'dd-mm-yyyy') AND RESERVATION.DEBUT_SEJOUR <= TO_DATE('07-03-2015', 'dd-mm-yyyy'))
-	OR
-	(LOGEMENT.NO_LOGEMENT NOT IN (SELECT SEJOUR.NO_LOGEMENT FROM SEJOUR WHERE SEJOUR.NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'))
+	LOGEMENT.NO_LOGEMENT IN (SELECT NO_LOGEMENT FROM LOGEMENT WHERE NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
 GROUP BY
 	LOGEMENT.NO_LOGEMENT,
 	LOGEMENT.CODE_TYPE_LOGEMENT,
 	TYPE_LOGEMENT.DESCRIPTION
 HAVING
-	NVL(SUM(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')) - GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('07-03-2015', 'dd-mm-yyyy'))) / 16 * 100, 0) < 30
+	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')), TO_DATE('07-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('07-03-2015', 'dd-mm-yyyy')), TO_DATE('23-03-2015', 'dd-mm-yyyy'))) / 16 * 100, 0) < 30
 ORDER BY
 	TAUX_OCCUPATION;
 /*=========================================================================================================
@@ -388,3 +382,14 @@ ORDER BY
 	Une nuitée représente l’hébergement d’une personne pour une nuit.  Indiquer dans l’ordre : 
 	pays, nom village, nombre de nuitées.
 /*=======================================================================================*/
+SELECT 
+	SEJOUR.NO_LOGEMENT,
+	RESERVATION.DEBUT_SEJOUR,
+	RESERVATION.FIN_SEJOUR
+FROM 
+	RESERVATION
+		INNER JOIN SEJOUR
+			ON RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE AND
+			   RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION
+WHERE	
+	SEJOUR.NOM_VILLAGE = 'Casa-Dali';
