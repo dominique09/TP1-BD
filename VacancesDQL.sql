@@ -17,7 +17,7 @@ SELECT
 	VILLAGE.PAYS,
 	VILLAGE.NO_CATEGORIE,
 	CAT_VILLAGE.DESCRIPTION,
-	TO_CHAR(VILLAGE.PRIX_TRANSPORT, '999.99') || ' $Can' AS PRIX_TRANSPORT
+	TO_CHAR(VILLAGE.PRIX_TRANSPORT, '99,999.99') || ' $Can' AS PRIX_TRANSPORT
 FROM
 	VILLAGE
 		INNER JOIN CATEGORIE_VILLAGE CAT_VILLAGE
@@ -384,3 +384,4 @@ ORDER BY
 	Une nuitée représente l’hébergement d’une personne pour une nuit.  Indiquer dans l’ordre : 
 	pays, nom village, nombre de nuitées.
 /*=======================================================================================*/
+SPOOL OFF;
