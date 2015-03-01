@@ -1,3 +1,4 @@
+
 SQL> /*=======================================================================================
 SQL> 	 1
 SQL> 	 Produire la liste des villages vacances.
@@ -261,13 +262,13 @@ SQL> SELECT
   3  	RESERV.NOM_VILLAGE,
   4  	TO_CHAR(RESERV.DEBUT_SEJOUR, 'dd/mm/yyyy') AS DATE_DEPART,
   5  	TO_CHAR(RESERV.FIN_SEJOUR, 'dd/mm/yyyy') AS DATE_RETOUR,
-  6  	SUM(SEJOUR.NB_PERSONNES) AS NBR_TOTAL_PERSONNES,
+  6  	NVL(SUM(SEJOUR.NB_PERSONNES),0) AS NBR_TOTAL_PERSONNES,
   7  	RESERV.NO_CLIENT,
   8  	CLIENT.NOM AS NOM_CLIENT,
   9  	CLIENT.PRENOM AS PRENOM_CLIENT
  10  FROM
  11  	RESERVATION RESERV
- 12  		INNER JOIN SEJOUR
+ 12  		LEFT JOIN SEJOUR
  13  			ON RESERV.NO_RESERVATION = SEJOUR.NO_RESERVATION
  14  			AND RESERV.NOM_VILLAGE = SEJOUR.NOM_VILLAGE
  15  		INNER JOIN CLIENT
@@ -293,12 +294,13 @@ NO_RESERVATION NOM_VILLAGE     DATE_DEPAR DATE_RETOU NBR_TOTAL_PERSONNES  NO_CLI
              2 Casa-Dali       15/03/2015 20/03/2015                   6          2 Daho            tienne             
              3 Casa-Dali       13/03/2015 19/03/2015                   4          9 Plante          Jos‚e               
              5 Casa-Dali       09/03/2015 13/03/2015                   3          8 St-Onge         ric                
+            15 Porto-Nuevo     01/02/2016 08/02/2016                   0          4 Gosselin        Yvonne              
             16 Porto-Nuevo     02/03/2016 07/03/2016                   8          4 Gosselin        Yvonne              
              7 Casa-Dali       20/03/2015 26/03/2015                   9          6 Par‚            Marine              
             11 Casa-Dali       31/03/2015 06/04/2015                   6          8 St-Onge         ric                
             19 Porto-Nuevo     01/03/2015 02/03/2015                   3          5 Dupuis          Pierre              
 
-7 rows selected.
+8 rows selected.
 
 SQL> /*============================================================================================================
 SQL> 	8
@@ -376,14 +378,13 @@ SQL> SELECT
   8  			   SEJOUR.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
   9  		RIGHT OUTER JOIN LOGEMENT
  10  			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT AND
- 11  			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE AND
- 12  			   SEJOUR.NOM_VILLAGE = 'Casa-Dali'
- 13  WHERE
- 14  	LOGEMENT.NO_LOGEMENT IN (SELECT NO_LOGEMENT FROM LOGEMENT WHERE NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
- 15  GROUP BY
- 16  	LOGEMENT.NO_LOGEMENT
- 17  ORDER BY
- 18  	LOGEMENT.NO_LOGEMENT;
+ 11  			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE
+ 12  WHERE
+ 13  	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+ 14  GROUP BY
+ 15  	LOGEMENT.NO_LOGEMENT
+ 16  ORDER BY
+ 17  	LOGEMENT.NO_LOGEMENT;
 
 NO_LOGEMENT DUREE_OCCUPATION                                                                                            
 ----------- ----------------                                                                                            
@@ -429,20 +430,19 @@ SQL> SELECT
  10  			   SEJOUR.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
  11  		RIGHT OUTER JOIN LOGEMENT
  12  			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT AND
- 13  			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE AND
- 14  			   SEJOUR.NOM_VILLAGE = 'Casa-Dali'
- 15  				INNER JOIN TYPE_LOGEMENT
- 16  					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
- 17  WHERE
- 18  	LOGEMENT.NO_LOGEMENT IN (SELECT NO_LOGEMENT FROM LOGEMENT WHERE NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
- 19  GROUP BY
- 20  	LOGEMENT.NO_LOGEMENT,
- 21  	LOGEMENT.CODE_TYPE_LOGEMENT,
- 22  	TYPE_LOGEMENT.DESCRIPTION
- 23  HAVING
- 24  	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')), TO_DATE('07-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('07-03-2015', 'dd-mm-yyyy')), TO_DATE('23-03-2015', 'dd-mm-yyyy'))) / 16 * 100, 0) < 30
- 25  ORDER BY
- 26  	TAUX_OCCUPATION;
+ 13  			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE
+ 14  				INNER JOIN TYPE_LOGEMENT
+ 15  					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
+ 16  WHERE
+ 17  	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+ 18  GROUP BY
+ 19  	LOGEMENT.NO_LOGEMENT,
+ 20  	LOGEMENT.CODE_TYPE_LOGEMENT,
+ 21  	TYPE_LOGEMENT.DESCRIPTION
+ 22  HAVING
+ 23  	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')), TO_DATE('07-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('07-03-2015', 'dd-mm-yyyy')), TO_DATE('23-03-2015', 'dd-mm-yyyy'))) / 16 * 100, 0) < 30
+ 24  ORDER BY
+ 25  	TAUX_OCCUPATION;
 
 TAUX_OCCUPATION                           NO_LOGEMENT CO DESCRIPTION                                                    
 ----------------------------------------- ----------- -- -----------------------------------                            
@@ -469,20 +469,19 @@ SQL> SELECT
   9  			   SEJOUR.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
  10  		RIGHT OUTER JOIN LOGEMENT
  11  			ON SEJOUR.NO_LOGEMENT = LOGEMENT.NO_LOGEMENT AND
- 12  			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE AND
- 13  			   SEJOUR.NOM_VILLAGE = 'Casa-Dali'
- 14  			    INNER JOIN TYPE_LOGEMENT
- 15  					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
- 16  WHERE
- 17  	LOGEMENT.NO_LOGEMENT IN (SELECT NO_LOGEMENT FROM LOGEMENT WHERE NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
- 18  GROUP BY
- 19  	LOGEMENT.NO_LOGEMENT,
- 20  	LOGEMENT.CODE_TYPE_LOGEMENT,
- 21  	TYPE_LOGEMENT.DESCRIPTION
- 22  HAVING
- 23  	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')), TO_DATE('17-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('17-03-2015', 'dd-mm-yyyy')), TO_DATE('23-03-2015', 'dd-mm-yyyy'))), 0) = 0
- 24  ORDER BY
- 25  	LOGEMENT.NO_LOGEMENT;
+ 12  			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE
+ 13  			    INNER JOIN TYPE_LOGEMENT
+ 14  					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
+ 15  WHERE
+ 16  	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+ 17  GROUP BY
+ 18  	LOGEMENT.NO_LOGEMENT,
+ 19  	LOGEMENT.CODE_TYPE_LOGEMENT,
+ 20  	TYPE_LOGEMENT.DESCRIPTION
+ 21  HAVING
+ 22  	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('23-03-2015', 'dd-mm-yyyy')), TO_DATE('17-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('17-03-2015', 'dd-mm-yyyy')), TO_DATE('23-03-2015', 'dd-mm-yyyy'))), 0) = 0
+ 23  ORDER BY
+ 24  	LOGEMENT.NO_LOGEMENT;
 
 NO_LOGEMENT CO DESCRIPTION                                                                                              
 ----------- -- -----------------------------------                                                                      
@@ -581,4 +580,32 @@ NO_RESERVATION DATE_RESE MONTANT_FACTUR PAYS       NOM_VILLAGE
 
 12 rows selected.
 
+SQL> /*=======================================================================================
+SQL> 	15
+SQL> 	Le ou les villages avec le plus grand nombre de nuit‚es vendues pour le mois de mars 2015.
+SQL> 	Une nuit‚e repr‚sente l'h‚bergement d'une personne pour une nuit. Indiquer dans l'ordre :
+SQL> 	pays, nom village, nombre de nuit‚es.
+SQL> /*=======================================================================================*/
+SQL> SELECT
+  2  	VILLAGE.PAYS,
+  3  	VILLAGE.NOM_VILLAGE,
+  4  	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')), TO_DATE('01-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy')), TO_DATE('31-03-2015', 'dd-mm-yyyy'))), 0) AS DUREE_OCCUPATION
+  5  FROM
+  6  	VILLAGE
+  7  		INNER JOIN RESERVATION
+  8  			ON VILLAGE.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
+  9  				LEFT JOIN SEJOUR
+ 10  					ON RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION AND
+ 11  					   RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE
+ 12  GROUP BY
+ 13  	VILLAGE.PAYS,
+ 14  	VILLAGE.NOM_VILLAGE;
+
+PAYS       NOM_VILLAGE     DUREE_OCCUPATION                                                                             
+---------- --------------- ----------------                                                                             
+Espagne    Porto-Nuevo                   16                                                                             
+GrŠce      Kouros                        10                                                                             
+Espagne    Casa-Dali                    128                                                                             
+
+SQL> 
 SQL> SPOOL OFF;
