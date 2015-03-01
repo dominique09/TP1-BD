@@ -3,7 +3,7 @@
 	Schéma MRD:	"Village Vacances VERSION 1"
 	Auteur:		Dominique Septembre + Charles-Edouard Beaudet - Cégep de Ste-Foy  	
 ***********************************************************/
-
+SPOOL 'C:\SPOOL_SELECT.txt';
 /*=======================================================================================
 	 1
 	 Produire la liste des villages vacances.
@@ -244,7 +244,7 @@ FROM
 			   SEJOUR.NOM_VILLAGE = LOGEMENT.NOM_VILLAGE AND
 			   SEJOUR.NOM_VILLAGE = 'Casa-Dali'
 WHERE
-	LOGEMENT.NO_LOGEMENT IN (SELECT NO_LOGEMENT FROM LOGEMENT WHERE NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
 GROUP BY
 	LOGEMENT.NO_LOGEMENT
 ORDER BY
@@ -275,7 +275,7 @@ FROM
 				INNER JOIN TYPE_LOGEMENT
 					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
 WHERE
-	LOGEMENT.NO_LOGEMENT IN (SELECT NO_LOGEMENT FROM LOGEMENT WHERE NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
 GROUP BY
 	LOGEMENT.NO_LOGEMENT,
 	LOGEMENT.CODE_TYPE_LOGEMENT,
@@ -306,7 +306,7 @@ FROM
 			    INNER JOIN TYPE_LOGEMENT
 					ON LOGEMENT.CODE_TYPE_LOGEMENT = TYPE_LOGEMENT.CODE_TYPE_LOGEMENT
 WHERE
-	LOGEMENT.NO_LOGEMENT IN (SELECT NO_LOGEMENT FROM LOGEMENT WHERE NOM_VILLAGE = 'Casa-Dali') AND LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
+	LOGEMENT.NOM_VILLAGE = 'Casa-Dali'
 GROUP BY
 	LOGEMENT.NO_LOGEMENT,
 	LOGEMENT.CODE_TYPE_LOGEMENT,
@@ -381,7 +381,8 @@ ORDER BY
 /*=======================================================================================
 	15
 	Le ou les villages avec le plus grand nombre de nuitées vendues pour le mois de mars 2015. 
-	Une nuitée représente l’hébergement d’une personne pour une nuit.  Indiquer dans l’ordre : 
+	Une nuitée représente l’hébergement d’une personne pour une nuit. Indiquer dans l’ordre : 
 	pays, nom village, nombre de nuitées.
 /*=======================================================================================*/
+
 SPOOL OFF;
