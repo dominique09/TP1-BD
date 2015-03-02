@@ -11,7 +11,7 @@
 UPDATE TARIF_NUIT
 	SET TARIF_UNITAIRE = TARIF_UNITAIRE * 1.055
 WHERE
-	CATEGORIE = 1 OR 2;
+	CATEGORIE = 1 OR CATEGORIE = 2;
 
 /*=======================================================================================
 	17
