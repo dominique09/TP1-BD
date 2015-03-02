@@ -392,8 +392,49 @@ FROM
 				LEFT JOIN SEJOUR
 					ON RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION AND
 					   RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE	
+HAVING 
+	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')), TO_DATE('01-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy')), TO_DATE('31-03-2015', 'dd-mm-yyyy'))), 0) = (SELECT
+																																																																MAX(DUREE_OCCUPATION)
+																																																															FROM
+																																																															(
+																																																																SELECT
+																																																																	VILLAGE.PAYS,
+																																																																	VILLAGE.NOM_VILLAGE,
+																																																																	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')), TO_DATE('01-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy')), TO_DATE('31-03-2015', 'dd-mm-yyyy'))), 0) AS DUREE_OCCUPATION
+																																																																FROM
+																																																																	VILLAGE
+																																																																		INNER JOIN RESERVATION
+																																																																			ON VILLAGE.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
+																																																																				LEFT JOIN SEJOUR
+																																																																					ON RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION AND
+																																																																					   RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE	
+																																																																GROUP BY
+																																																																	VILLAGE.PAYS,
+																																																																	VILLAGE.NOM_VILLAGE
+																																																															))
 GROUP BY
-	VILLAGE.PAYS,
-	VILLAGE.NOM_VILLAGE;
+		VILLAGE.PAYS,
+		VILLAGE.NOM_VILLAGE;
+
+		
+SELECT
+	MAX(DUREE_OCCUPATION)
+FROM
+(
+	SELECT
+		VILLAGE.PAYS,
+		VILLAGE.NOM_VILLAGE,
+		NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')), TO_DATE('01-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy')), TO_DATE('31-03-2015', 'dd-mm-yyyy'))), 0) AS DUREE_OCCUPATION
+	FROM
+		VILLAGE
+			INNER JOIN RESERVATION
+				ON VILLAGE.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
+					LEFT JOIN SEJOUR
+						ON RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION AND
+						   RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE	
+	GROUP BY
+		VILLAGE.PAYS,
+		VILLAGE.NOM_VILLAGE
+);
 	
 SPOOL OFF;
