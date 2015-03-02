@@ -3,6 +3,8 @@
 	Schéma MRD:	"Village Vacances VERSION 1"
 	Auteur:		Dominique Septembre + Charles-Edouard Beaudet - Cégep de Ste-Foy  	
 ***********************************************************/
+SET LINESIZE 120;
+SET ECHO ON;
 SPOOL 'C:\SPOOL_UPDATE.txt';
 /*=======================================================================================
 	16
