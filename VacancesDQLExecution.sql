@@ -1,4 +1,3 @@
-
 SQL> /*=======================================================================================
 SQL> 	 1
 SQL> 	 Produire la liste des villages vacances.
@@ -597,14 +596,34 @@ SQL> SELECT
   9  				LEFT JOIN SEJOUR
  10  					ON RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION AND
  11  					   RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE
- 12  GROUP BY
- 13  	VILLAGE.PAYS,
- 14  	VILLAGE.NOM_VILLAGE;
+ 12  HAVING
+ 13  	NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')), TO_DATE('01-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy')), TO_DATE('31-03-2015', 'dd-mm-yyyy'))), 0) = (
+ 14  	SELECT
+ 15  		MAX(DUREE_OCCUPATION)
+ 16  	FROM
+ 17  	(
+ 18  		SELECT
+ 19  			VILLAGE.PAYS,
+ 20  			VILLAGE.NOM_VILLAGE,
+ 21  			NVL(SUM(GREATEST(LEAST(RESERVATION.FIN_SEJOUR, TO_DATE('31-03-2015', 'dd-mm-yyyy')), TO_DATE('01-03-2015', 'dd-mm-yyyy')) - LEAST(GREATEST(RESERVATION.DEBUT_SEJOUR, TO_DATE('01-03-2015', 'dd-mm-yyyy')), TO_DATE('31-03-2015', 'dd-mm-yyyy'))), 0) AS DUREE_OCCUPATION
+ 22  		FROM
+ 23  			VILLAGE
+ 24  				INNER JOIN RESERVATION
+ 25  					ON VILLAGE.NOM_VILLAGE = RESERVATION.NOM_VILLAGE
+ 26  						LEFT JOIN SEJOUR
+ 27  							ON RESERVATION.NO_RESERVATION = SEJOUR.NO_RESERVATION AND
+ 28  							   RESERVATION.NOM_VILLAGE = SEJOUR.NOM_VILLAGE
+ 29  		GROUP BY
+ 30  			VILLAGE.PAYS,
+ 31  			VILLAGE.NOM_VILLAGE
+ 32  	)
+ 33  )
+ 34  GROUP BY
+ 35  		VILLAGE.PAYS,
+ 36  		VILLAGE.NOM_VILLAGE;
 
 PAYS       NOM_VILLAGE     DUREE_OCCUPATION                                                                             
 ---------- --------------- ----------------                                                                             
-Espagne    Porto-Nuevo                   16                                                                             
-GrŠce      Kouros                        10                                                                             
 Espagne    Casa-Dali                    128                                                                             
 
 SQL> 
