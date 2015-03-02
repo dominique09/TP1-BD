@@ -1,10 +1,9 @@
-SPOOL 'C:\VacancesDMLExecution.sql';
 /***********************************************************
 	DQL Update
 	Schéma MRD:	"Village Vacances VERSION 1"
 	Auteur:		Dominique Septembre + Charles-Edouard Beaudet - Cégep de Ste-Foy  	
 ***********************************************************/
-
+SPOOL 'C:\SPOOL_UPDATE.txt';
 /*=======================================================================================
 	16
 	Augmenter de 5,5% tous les tarifs des nuitées pour les villages de catégorie 1 et 2. 
@@ -43,4 +42,5 @@ WHERE
 	OR NO_LOGEMENT = 19)
 	AND NOM_VILLAGE = 'Casa-Dali'
 	AND NB_PERSONNES = 2;
+	
 SPOOL OFF;

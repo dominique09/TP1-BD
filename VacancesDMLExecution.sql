@@ -1,9 +1,3 @@
-SQL> /***********************************************************
-SQL> 	DQL Update
-SQL> 	Sch‚ma MRD:	"Village Vacances VERSION 1"
-SQL> 	Auteur:		Dominique Septembre + Charles-Edouard Beaudet - C‚gep de Ste-Foy
-SQL> ***********************************************************/
-SQL> 
 SQL> /*=======================================================================================
 SQL> 	16
 SQL> 	Augmenter de 5,5% tous les tarifs des nuit‚es pour les villages de cat‚gorie 1 et 2.
@@ -25,14 +19,14 @@ SQL> DELETE
   3  WHERE
   4  	NO_RESERVATION = 16;
 
-0 rows deleted.
+4 rows deleted.
 
 SQL> DELETE
   2  	RESERVATION
   3  WHERE
   4  	NO_RESERVATION = 16;
 
-0 rows deleted.
+1 row deleted.
 
 SQL> 
 SQL> 
@@ -52,6 +46,7 @@ SQL> UPDATE
   8  	AND NOM_VILLAGE = 'Casa-Dali'
   9  	AND NB_PERSONNES = 2;
 
-0 rows updated.
+2 rows updated.
 
+SQL> 
 SQL> SPOOL OFF;
