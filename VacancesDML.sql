@@ -33,3 +33,12 @@ WHERE
 	dans la suite 8.	Pour simplifier, on considère que la disponibilité de ce
 	logement est assurée. 
 ========================================================================================*/
+UPDATE
+	SEJOUR
+SET
+	NO_LOGEMENT = 8
+WHERE
+	(NO_LOGEMENT = 11
+	OR NO_LOGEMENT = 19)
+	AND NOM_VILLAGE = 'Casa-Dali'
+	AND NB_PERSONNES = 2;
