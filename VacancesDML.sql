@@ -17,7 +17,14 @@ WHERE
 	17
 	Supprimer la réservation numéro 16.  
 ========================================================================================*/
-
+DELETE
+	SEJOUR
+WHERE
+	NO_RESERVATION = 16;
+DELETE
+	RESERVATION
+WHERE
+	NO_RESERVATION = 16;
 
 
 /*=======================================================================================
